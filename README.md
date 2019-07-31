@@ -54,3 +54,20 @@ Install pcl:
 Visualize the point cloud with pcl-tools:
 
     pcl_viewer map.pcd
+
+04-FeaturePointMatching
+
+Use **ORB (Oriented FAST and Rotated BRIEF)** to find the similarity between two images.
+
+ORB is basically a fusion of **FAST keypoint detector** and **BRIEF descriptor** with many modifications to enhance the performance.
+
+<table>
+    <tr>
+        <td><img src="images/imageAllMatches.jpg" width="600" /></td>
+    </tr>
+    <tr>
+        <td><img src="images/imageGoodMatches.jpg" width="600" /></td>
+    </tr>
+</table>
+
+The above figures shows the matches of the feature points. The figure at the top shows all matching feature points between two images. The figure at the bottom filters the pairs with low similarity.
