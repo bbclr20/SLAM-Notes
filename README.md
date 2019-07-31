@@ -16,7 +16,7 @@ CMake 3.5.1
 
 ## Examples
 
-01-CMake Basic
+### 01-CMake Basic
 
 An example which uses **CMake** to create the makefile of an application. The executable links the library of **OpenCV** to show an image. 
 
@@ -30,7 +30,7 @@ Create a build directory which is used to save the Makefile, share lib, etc.
     cmake ..
     make
 
-02-Eigen
+### 02-Eigen
 
 Install the lib of eigen3:
 
@@ -38,7 +38,9 @@ Install the lib of eigen3:
 
 The example shows how to use **eigen3** to sovle the matrix equation.
 
-03-PointCloud
+### 03-PointCloud
+
+Reconstruct the point cloud form **RGBD** images.
 
 Install pcl:
 
@@ -55,7 +57,11 @@ Visualize the point cloud with pcl-tools:
 
     pcl_viewer map.pcd
 
-04-FeaturePointMatching
+<img src="images/03-pointCloud.png" width="400" />
+
+The image above shows the reconstruction of the point cloud.
+
+### 04-FeaturePointMatching
 
 Use **ORB (Oriented FAST and Rotated BRIEF)** to find the similarity between two images.
 
@@ -63,10 +69,10 @@ ORB is basically a fusion of **FAST keypoint detector** and **BRIEF descriptor**
 
 <table>
     <tr>
-        <td><img src="images/imageAllMatches.jpg" width="600" /></td>
+        <td><img src="images/04-imageAllMatches.jpg" width="600" /></td>
     </tr>
     <tr>
-        <td><img src="images/imageGoodMatches.jpg" width="600" /></td>
+        <td><img src="images/04-imageGoodMatches.jpg" width="600" /></td>
     </tr>
 </table>
 
