@@ -14,11 +14,13 @@ OpenCV 3.x
 
 CMake 3.5.1
 
+Other libs are listed in the description of each example.
+
 ## Examples
 
 ### 01-CMake Basic
 
-An example which uses **CMake** to create the makefile of an application. The executable links the library of **OpenCV** to show an image. 
+An example which uses **CMake** to create the makefile of an application. The executable file links the library of **OpenCV** to show an image. 
 
 Create a build directory which is used to save the Makefile, share lib, etc.
 
@@ -29,6 +31,8 @@ Create a build directory which is used to save the Makefile, share lib, etc.
 
     cmake ..
     make
+
+!! The examples below always need to follow the steps mentioned above to build.
 
 ### 02-Eigen
 
@@ -77,3 +81,13 @@ ORB is basically a fusion of **FAST keypoint detector** and **BRIEF descriptor**
 </table>
 
 The above figures shows the matches of the feature points. The figure at the top shows all matching feature points between two images. The figure at the bottom filters the pairs with low similarity.
+
+### 05-PoseEstimation
+
+#### pose_estimation_2d2d.cpp
+
+Estimate the pose through two RGB images.
+
+#### triangulation.cpp
+
+Compute the position obsered from camera1.

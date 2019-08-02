@@ -11,6 +11,10 @@ include_directories(
     "/usr/include/eigen3/"
 )
 
-# src
+# pose_estimation_2d2d
 add_executable( pose_estimation_2d2d pose_estimation_2d2d.cpp )
 target_link_libraries( pose_estimation_2d2d ${OpenCV_LIBS} )
+
+# triangulation
+add_executable( triangulation triangulation.cpp )
+target_link_libraries( triangulation ${OpenCV_LIBS} )
