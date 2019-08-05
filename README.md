@@ -88,6 +88,12 @@ The above figures shows the matches of the feature points. The figure at the top
 
 Estimate the pose through two RGB images.
 
+#### pose_estimation_3d2d.cpp
+
+[How to install g2o](https://github.com/RainerKuemmerle/g2o)
+
+[g2o理解及实践代码报错解决方法](https://blog.csdn.net/try_again_later/article/details/82585025)
+
 #### triangulation.cpp
 
 Compute the position obsered from camera1.
