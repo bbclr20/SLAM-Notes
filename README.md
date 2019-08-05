@@ -82,7 +82,13 @@ ORB is basically a fusion of **FAST keypoint detector** and **BRIEF descriptor**
 
 The above figures shows the matches of the feature points. The figure at the top shows all matching feature points between two images. The figure at the bottom filters the pairs with low similarity.
 
-### 05-PoseEstimation
+### 05-Optimization
+
+#### ceres_curve_fitting
+
+See the [document of ceres](http://ceres-solver.org/installation.html) for more information.
+
+### 06-PoseEstimation
 
 #### pose_estimation_2d2d.cpp
 
