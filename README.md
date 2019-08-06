@@ -113,3 +113,18 @@ Match 3d-3d keypoints with ICP and do bundle adjustment.
 #### triangulation.cpp
 
 Compute the position obsered from camera1.
+
+### 07-OpticalFlow
+
+#### LKFlow
+
+Use Lucas-Kanade method to track the keypoints.
+
+<table>
+    <tr>
+        <td><img src="images/07-LKTrackConners1.png" width="400" /></td>
+        <td><img src="images/07-LKTrackConners2.png" width="400" /></td>
+    </tr>
+</table>
+
+The figure above shows the keypoints at different time steps. The number of the tracking points decrease as the time increase.
