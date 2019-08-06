@@ -104,7 +104,11 @@ Estimate the pose through two RGB images.
 
 #### pose_estimation_3d2d.cpp
 
-3d-2d pose estimation and bundle adjustment.
+Match 3d-2d keypoints with PnP and do bundle adjustment.
+
+#### pose_estimation_3d3d.cpp
+
+Match 3d-3d keypoints with ICP and do bundle adjustment.
 
 #### triangulation.cpp
 

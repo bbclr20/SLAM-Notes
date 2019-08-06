@@ -74,72 +74,96 @@ Point2d pixel2cam (const Point2d& p, const Mat& K) {
 }
 
 /*
+Do bundle adjustment.
+
+@param const vector<Point3f> points_3d (in): object points.
+@param const vector<Point2f> points_2d (in): image points.
+@param const Mat& K (in): camera matrix.
+@param Mat& R (in, out): rotation matrix.
+@param Mat& t (in, out): translation.
+
+@return void
 */
 void bundleAdjustment (
-    const vector< Point3f > points_3d,
-    const vector< Point2f > points_2d,
+    const vector<Point3f> points_3d,
+    const vector<Point2f> points_2d,
     const Mat& K,
     Mat& R, 
     Mat& t)
 {
     //
     // init g2o
-    // pose_dim: 6, landmark_dim: 3
     //
-    typedef g2o::BlockSolver< g2o::BlockSolverTraits<6,3> > Block;  
+    const int POSE_DIM = 6;
+    const int LANDMARK_DIM = 3;
+    typedef g2o::BlockSolver<g2o::BlockSolverTraits<POSE_DIM, LANDMARK_DIM>> Block;  
     Block::LinearSolverType* linearSolver = new g2o::LinearSolverCSparse<Block::PoseMatrixType>();
     Block* solver_ptr = new Block(unique_ptr<Block::LinearSolverType>(linearSolver));
     g2o::OptimizationAlgorithmLevenberg* solver = new g2o::OptimizationAlgorithmLevenberg(unique_ptr<Block>(solver_ptr)); 
+    
     g2o::SparseOptimizer optimizer;
-    optimizer.setAlgorithm ( solver );
+    optimizer.setAlgorithm(solver);
 
-    // vertex
+    //
+    // set R, T as vertices
+    //
     g2o::VertexSE3Expmap* pose = new g2o::VertexSE3Expmap(); // camera pose
     Eigen::Matrix3d R_mat;
     R_mat <<
-          R.at<double> ( 0,0 ), R.at<double> ( 0,1 ), R.at<double> ( 0,2 ),
-          R.at<double> ( 1,0 ), R.at<double> ( 1,1 ), R.at<double> ( 1,2 ),
-          R.at<double> ( 2,0 ), R.at<double> ( 2,1 ), R.at<double> ( 2,2 );
+          R.at<double>(0, 0), R.at<double>(0, 1), R.at<double>(0, 2),
+          R.at<double>(1, 0), R.at<double>(1, 1), R.at<double>(1, 2),
+          R.at<double>(2, 0), R.at<double>(2, 1), R.at<double>(2, 2);
+    Eigen::Vector3d T_vec;
+    T_vec << Eigen::Vector3d(t.at<double>(0, 0), t.at<double>(1, 0), t.at<double>(2, 0));
     pose->setId(0);
     pose->setEstimate( g2o::SE3Quat (
                             R_mat,
-                            Eigen::Vector3d ( t.at<double> ( 0,0 ), t.at<double> ( 1,0 ), t.at<double> ( 2,0 ) )
+                            T_vec
                         ) );
-    optimizer.addVertex( pose );
+    optimizer.addVertex(pose);
 
+    //
+    // set the positions of the landmarks as vertices
+    //
     int index = 1;
     for (const Point3f p:points_3d) {  
-    // landmarks 
         g2o::VertexSBAPointXYZ* point = new g2o::VertexSBAPointXYZ();
         point->setId(index++);
-        point->setEstimate(Eigen::Vector3d (p.x, p.y, p.z));
+        point->setEstimate(Eigen::Vector3d(p.x, p.y, p.z));
         point->setMarginalized(true);
         optimizer.addVertex(point);
     }
 
-    // parameter: camera intrinsics
+    //
+    // add camera intrinsics to parameters
+    //
     g2o::CameraParameters* camera = new g2o::CameraParameters (
-        K.at<double> (0, 0), 
-        Eigen::Vector2d ( K.at<double>(0,2), K.at<double>(1,2) ),
+        K.at<double>(0, 0), 
+        Eigen::Vector2d(K.at<double>(0,2), K.at<double>(1,2)),
         0
     );
     camera->setId(0);
     optimizer.addParameter(camera);
 
-    // edges
+    //
+    // add edges
+    //
     index = 1;
     for (const Point2f p:points_2d) {
         g2o::EdgeProjectXYZ2UV* edge = new g2o::EdgeProjectXYZ2UV();
         edge->setId(index);
         edge->setVertex(0, dynamic_cast<g2o::VertexSBAPointXYZ*>(optimizer.vertex(index)));
         edge->setVertex(1, pose);
-        edge->setMeasurement(Eigen::Vector2d(p.x, p.y ));
+        edge->setMeasurement(Eigen::Vector2d(p.x, p.y));
         edge->setParameterId(0,0);
         edge->setInformation(Eigen::Matrix2d::Identity());
         optimizer.addEdge(edge);
         index++;
     }
 
+    //
+    // start optimization
+    //
     chrono::steady_clock::time_point t1 = chrono::steady_clock::now();
     optimizer.setVerbose(true);
     optimizer.initializeOptimization();
@@ -161,7 +185,7 @@ int main (int argc, char** argv) {
     string depth_img = "../data/1_depth.png";
 
     if (argc != 4) {
-        cout << "usage: pose_estimation_2d2d img1 img2" << endl;
+        cout << "usage: pose_estimation_2d2d img1 img2 depth_img" << endl;
         cout << "using default images!!" << endl;
         cout << "image1: " << img1 << endl;
         cout << "image2: " << img2 << endl;
