@@ -127,4 +127,21 @@ Use Lucas-Kanade method to track the keypoints.
     </tr>
 </table>
 
-The figure above shows the keypoints at different time steps. The number of the tracking points decrease as the time increase.
+The figure above shows the keypoints at different time steps. The number of the tracking points decrease as the increase of the time.
+
+### Project
+
+#### 0.1
+
+Create a template of the slam project.
+
+Install Sophus
+
+    git clone https://github.com/strasdat/Sophus.git
+    cd Sophus
+    git checkout a621ff
+    mkdir build
+    cd build
+    cmake ..
+    make
+    sudo make install
