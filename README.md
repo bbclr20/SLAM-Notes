@@ -86,11 +86,36 @@ The above figures shows the matches of the feature points. The figure at the top
 
 #### ceres_curve_fitting
 
+[How to install Ceres](http://ceres-solver.org/installation.html)
+
+    sudo apt-get install libgoogle-glog-dev libatlas-base-dev libeigen3-dev
+    sudo apt-get install libsuitesparse-dev
+
+    sudo add-apt-repository ppa:bzindovic/suitesparse-bugfix-1319687
+    sudo apt-get update
+    sudo apt-get install libsuitesparse-dev
+
+    git clone https://ceres-solver.googlesource.com/ceres-solver
+    mkdir build
+    cd build
+    cmake ..
+    make -j 8
+    sudo make install
+
 See the [document of ceres](http://ceres-solver.org/installation.html) for more information.
 
 #### g2o_curve_fitting
 
 [How to install g2o](https://github.com/RainerKuemmerle/g2o)
+
+    sudo apt install libsuitesparse-dev qtdeclarative5-dev qt5-qmake libqglviewer-dev
+
+    git clone https://github.com/RainerKuemmerle/g2o.git
+    mkdir build
+    cd build
+    cmake ../
+    make -j 8
+    sudo make install
 
 [g2o理解及实践代码报错解决方法](https://blog.csdn.net/try_again_later/article/details/82585025)
 
@@ -120,6 +145,10 @@ Compute the position obsered from camera1.
 
 Use Lucas-Kanade method to track the keypoints.
 
+Use the Python script to create associate.txt:
+
+    python3 associate.py rgb.txt depth.txt
+
 <table>
     <tr>
         <td><img src="images/07-LKTrackConners1.png" width="400" /></td>
@@ -139,9 +168,31 @@ Install Sophus
 
     git clone https://github.com/strasdat/Sophus.git
     cd Sophus
+
     git checkout a621ff
+    
     mkdir build
     cd build
     cmake ..
     make
     sudo make install
+
+### 0.2
+
+Download PUTSLAM:
+    
+    mkdir datasets && cd datasets && wget http://vision.in.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_desk.tgz
+
+See also: https://github.com/LRMPUT/PUTSLAM/wiki/Running-PUTSLAM-on-datasets
+
+fatal error: opencv2/viz.hpp: No such file or directory (to use the viz module in opencv you need VTK)
+Download VTKv (7.1.1) from https://vtk.org/download/
+
+    cd VTK
+    mkdir build
+    cd build
+    cmake ..
+    make -j 8
+    sudo make install
+
+Rebuild OpenCV (set the WITH_VTK=ON and ENABLE_CXX11=ON before rebuilding the source code)
